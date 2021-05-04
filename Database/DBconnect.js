@@ -1,6 +1,8 @@
 const mongoose = require("mongoose")
 
-const uri = "mongodb+srv://rupamdas832:9430112253@products-data-cluster.tmatv.mongodb.net/product-inventory?retryWrites=true&w=majority";
+const mySecret = process.env['mongoDB_Atlas_credentials']
+
+const uri = `mongodb+srv://${mySecret}@products-data-cluster.tmatv.mongodb.net/product-inventory?retryWrites=true&w=majority`;
 
 const initializeDBconnection = async () => {
   try{
