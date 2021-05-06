@@ -8,11 +8,11 @@ router.route("/")
       const {email, password} = req.body;
 
     try{
-        const findUser = await User.find({email: email})
+        const findUser = await User.findOne({email: email})
         
         if(findUser){
-          if(findUser[0].password == password){
-            res.status(200).json({success: true, user: findUser[0]})
+          if(findUser.password == password){
+            res.status(200).json({success: true, user: findUser})
           }
           else res.status(401).json({success: false, message: "Sorry! Password is wrong"})
         }

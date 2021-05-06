@@ -6,8 +6,13 @@ const {Product} = require("./product.model.js")
 router.route("/")
   .get(async(req,res) => {
 
-    const products = await Product.find({})
-    res.status(200).json({success: true, products})
+    try{
+      const products = await Product.find({})
+      res.status(200).json({success: true, products})
+    }catch(error) {
+      res.status(401).json({success: false, message: "Products couldn't be retrieved from db"})
+    }
+    
   })
   .post(async(req,res) => {
     const {name,price,img,desc,quantity,rating,discount,inStock,isPrimeChoice,category} = req.body;

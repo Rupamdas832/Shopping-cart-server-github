@@ -6,6 +6,7 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 
+const mySecret = process.env['Port']
 
 const {initializeDBconnection} = require("./Database/DBconnect.js")
 initializeDBconnection()
@@ -33,6 +34,6 @@ app.get("/", (req,res) => {
 })
 
 
-app.listen(3000, () => {
-  console.log("SERVER IS running at port 3000")
+app.listen(mySecret, () => {
+  console.log("SERVER IS running")
 })
