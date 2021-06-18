@@ -15,14 +15,23 @@ const userSchema = new Schema({
     type: String,
     required: true
     },
-  cartId: {
-    type: String,
-    required: true
-  },
-  wishlistId: {
-    type: String,
-    required: true
-  }
+  paymentCards: [{
+    cardType: String,
+    cardNumber: Number,
+    ownerName: String,
+    validMonth: Number,
+    validYear: Number
+  }],
+  address: [{
+    name: String,
+    address: String,
+    pincode: Number,
+    mobile: Number,
+    city: String,
+    state: String
+  }]
+},{
+  timestamps: true
 })
 
 const User = mongoose.model('User', userSchema)
