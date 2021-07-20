@@ -52,13 +52,34 @@ const updateProductToCart = async (req, res) => {
       return item
     })
     }else {
-      cart.products.push({ _id, quantity: 1 })
+      cart.products.push({ _id, quantity: 1, status: true })
     }
     cart = await cart.save()
     res.status(201).json({ success: true, cart })
   } catch (error) {
     console.log(error)
     res.status(500).json({ success: false, message: "Couldn't be updated. Sorry!", error })
+  }
+}
+
+const updateProductStatus = async(req,res) => {
+ let { cart } = req;
+  const { productId} = req.params
+  try {
+    const foundProduct = cart.products.find(item => item._id == productId)
+    if(foundProduct){
+      cart.products = cart.products.map(item => {
+        if (item._id == productId) {
+          item.status = !item.status
+        }
+      return item
+    })
+    }
+    cart = await cart.save()
+    res.status(200).json({ success: true, cart })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ success: false, message: "Couldn't update product status", error })
   }
 }
 
@@ -84,6 +105,7 @@ const removeOneQuantityFromCart = async (req, res) => {
   }
 }
 
+
 const removeEntireProductFromCart = async (req, res) => {
   let { cart } = req;
   const { _id } = req.body
@@ -98,11 +120,11 @@ const removeEntireProductFromCart = async (req, res) => {
   }
 }
 
-const emptyCart = async (req, res) => {
+const checkoutCartItems = async (req, res) => {
   let { cart } = req;
 
   try {
-    cart.products = []
+    cart.products = cart.products.filter(item => item.status !== true)
     cart = await cart.save()
     res.status(200).json({ success: true, cart })
   } catch (error) {
@@ -111,4 +133,6 @@ const emptyCart = async (req, res) => {
   }
 }
 
-module.exports = { getCart, getCartByUserId, updateProductToCart, removeOneQuantityFromCart, removeEntireProductFromCart,emptyCart }
+
+
+module.exports = { getCart, getCartByUserId, updateProductToCart, removeOneQuantityFromCart, removeEntireProductFromCart,checkoutCartItems,updateProductStatus }
